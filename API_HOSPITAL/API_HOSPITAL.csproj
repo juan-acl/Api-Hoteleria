@@ -155,13 +155,15 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\resertvationController.cs" />
+    <Compile Include="Controllers\EmpleadosController.cs" />
+    <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\hotelController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Empleados\csObjectEmpleados.cs" />
+    <Compile Include="Models\Empleados\csEmpleados.cs" />
     <Compile Include="Models\Hotel\csHotel.cs" />
     <Compile Include="Models\Hotel\csObjectHotel.cs" />
     <Compile Include="Models\Reservacion\csObjectsReservationModel.cs" />

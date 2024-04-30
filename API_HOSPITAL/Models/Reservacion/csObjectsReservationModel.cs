@@ -13,6 +13,13 @@ namespace API_HOSPITAL.Models.ReservationModel
             public DateTime EmitionDate { get; set; }
             public int IdClient { get; set; }
         }
+        public class updateReservation
+        {
+            public decimal Total { get; set; }
+            public DateTime EmitionDate { get; set; }
+            public int IdClient { get; set; }
+            public int IdReservation { get; set; }
+        }
         public class responseReservation
         {
             public int status { get; set; }

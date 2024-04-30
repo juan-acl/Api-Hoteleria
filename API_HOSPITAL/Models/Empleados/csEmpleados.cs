@@ -6,15 +6,14 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Sockets;
 using System.Web;
-using System.Web.UI.WebControls;
 
-namespace API_HOSPITAL.Models.ReservationModel
+namespace API_HOSPITAL.Models.Empleados
 {
-    public class csReservationModel
+    public class csEmpleados
     {
-        public csObjectsReservationModel.responseReservation CreateReservation(decimal total, DateTime emition_date, int id_client)
+        public csObjectEmpleados.responseEmpleado CreateEmpleado(string name, string lastname, string email, string password, string phone_number, string id_hotel)
         {
-            csObjectsReservationModel.responseReservation response = new csObjectsReservationModel.responseReservation();
+            csObjectEmpleados.responseEmpleado response = new csObjectEmpleados.responseEmpleado();
             string connectionString = "";
             SqlConnection connection = null;
             try
@@ -22,14 +21,18 @@ namespace API_HOSPITAL.Models.ReservationModel
                 connectionString = ConfigurationManager.ConnectionStrings["cnConnection"].ConnectionString;
                 connection = new SqlConnection(connectionString);
                 connection.Open();
-                string query = "INSERT INTO reservation (total, emition_date, id_client) VALUES (@total, @emition_date, @id_client)";
+                string query = "INSERT INTO employee (name, lastname, email, password, phone_number, id_hotel) VALUES (@name, @lastname, @email, @password, @phone_number, @id_hotel)";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@total", total);
-                command.Parameters.AddWithValue("@emition_date", emition_date);
-                command.Parameters.AddWithValue("@id_client", id_client);
+                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@lastname", lastname);
+                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@password", password);
+                command.Parameters.AddWithValue("@phone_number", phone_number);
+                command.Parameters.AddWithValue("@id_hotel", id_hotel);
                 response.status = command.ExecuteNonQuery();
-                response.message = "Reservation created successfully";
-            }catch(Exception error)
+                response.message = "Empleado created successfully";
+            }
+            catch (Exception error)
             {
                 response.status = 500;
                 response.message = error.Message;
@@ -40,9 +43,9 @@ namespace API_HOSPITAL.Models.ReservationModel
             }
             return response;
         }
-        public csObjectsReservationModel.responseReservation UpdateReservation(decimal Total, DateTime EmitionDate, int IdClient, int IdReservation)
+        public csObjectEmpleados.responseEmpleado UpdateEmpleado(string name, string lastname, string email, string password, string phone_number, string id_hotel, int id_empleado)
         {
-            csObjectsReservationModel.responseReservation response = new csObjectsReservationModel.responseReservation();
+            csObjectEmpleados.responseEmpleado response = new csObjectEmpleados.responseEmpleado();
             string connectionString = "";
             SqlConnection connection = null;
             try
@@ -50,28 +53,31 @@ namespace API_HOSPITAL.Models.ReservationModel
                 connectionString = ConfigurationManager.ConnectionStrings["cnConnection"].ConnectionString;
                 connection = new SqlConnection(connectionString);
                 connection.Open();
-                string query = "UPDATE reservation SET total = @total, emition_date = @emition_date, id_client = @id_client WHERE id_reservation = @id_reservation";
+                string query = "UPDATE employee SET name = @name, lastname = @lastname, email = @email, password = @password, phone_number = @phone_number, id_hotel = @id_hotel WHERE id_employee = @id_empleado";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@total", Total);
-                command.Parameters.AddWithValue("@emition_date", EmitionDate);
-                command.Parameters.AddWithValue("@id_client", IdClient);
-                command.Parameters.AddWithValue("@id_reservation", IdReservation);
+                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@lastname", lastname);
+                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@password", password);
+                command.Parameters.AddWithValue("@phone_number", phone_number);
+                command.Parameters.AddWithValue("@id_hotel", id_hotel);
+                command.Parameters.AddWithValue("@id_empleado", id_empleado);
                 response.status = command.ExecuteNonQuery();
-                response.message = "Reservation updated successfully";
-            }catch(Exception error)
+                response.message = "Empleado updated successfully";
+            }
+            catch (Exception error)
             {
                 response.status = 500;
                 response.message = error.Message;
             }
             finally
             {
-                connection.Close();
             }
             return response;
         }
-        public csObjectsReservationModel.responseReservation DeleteReservation(int IdReservation)
+        public csObjectEmpleados.responseEmpleado DeleteEmpleado(int id_empleado)
         {
-            csObjectsReservationModel.responseReservation response = new csObjectsReservationModel.responseReservation();
+            csObjectEmpleados.responseEmpleado response = new csObjectEmpleados.responseEmpleado();
             string connectionString = "";
             SqlConnection connection = null;
             try
@@ -79,23 +85,23 @@ namespace API_HOSPITAL.Models.ReservationModel
                 connectionString = ConfigurationManager.ConnectionStrings["cnConnection"].ConnectionString;
                 connection = new SqlConnection(connectionString);
                 connection.Open();
-                string query = "DELETE FROM reservation WHERE id_reservation = @id_reservation";
+                string query = "DELETE FROM employee WHERE id_employee = @id_empleado";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@id_reservation", IdReservation);
+                command.Parameters.AddWithValue("@id_empleado", id_empleado);
                 response.status = command.ExecuteNonQuery();
-                response.message = "Reservation deleted successfully";
-            }catch(Exception error)
+                response.message = "Empleado deleted successfully";
+            }
+            catch (Exception error)
             {
                 response.status = 500;
                 response.message = error.Message;
             }
             finally
             {
-                connection.Close();
             }
             return response;
         }
-        public DataSet GetReservationById(int IdReservation)
+        public DataSet GetEmpleadoById(int id_empleado)
         {
             string connectionString = "";
             SqlConnection connection = null;
@@ -105,46 +111,45 @@ namespace API_HOSPITAL.Models.ReservationModel
                 connectionString = ConfigurationManager.ConnectionStrings["cnConnection"].ConnectionString;
                 connection = new SqlConnection(connectionString);
                 connection.Open();
-                string query = "SELECT * FROM reservation WHERE id_reservation = @id_reservation";
+                string query = "SELECT * FROM employee WHERE id_employee = @id_empleado";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@id_reservation", IdReservation);
+                command.Parameters.AddWithValue("@id_empleado", id_empleado);
                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command);
                 sqlDataAdapter.Fill(dataSet);
-                dataSet.Tables[0].TableName = "reservation";
+                dataSet.Tables[0].TableName = "employee";
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 return null;
             }
             finally
             {
-                connection.Close();
             }
             return dataSet;
         }
-        public DataSet GetAllReservations()
+        public DataSet GetEmpleados()
         {
+            csObjectEmpleados.responseEmpleado response = new csObjectEmpleados.responseEmpleado();
             string connectionString = "";
-            DataSet dataSet = new DataSet();
             SqlConnection connection = null;
+            DataSet dataSet = new DataSet();
             try
             {
                 connectionString = ConfigurationManager.ConnectionStrings["cnConnection"].ConnectionString;
                 connection = new SqlConnection(connectionString);
                 connection.Open();
-                string query = "SELECT * FROM reservation";
+                string query = "SELECT * FROM employee";
                 SqlCommand sqlCommand = new SqlCommand(query, connection);
                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
                 sqlDataAdapter.Fill(dataSet);
-                dataSet.Tables[0].TableName = "reservation";
+                dataSet.Tables[0].TableName = "employee";
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 return null;
             }
             finally
             {
-                connection.Close();
             }
             return dataSet;
         }
